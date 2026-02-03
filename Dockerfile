@@ -6,14 +6,15 @@ ENV COMFY_DIR=/app/comfyui
 WORKDIR /app
 
 # Copy install script into the container
-COPY install.sh /app/install.sh
-RUN chmod +x /app/install.sh
+COPY launch.sh /app/launch.sh
+RUN chmod +x /app/launch.sh
 
 # Install required software
 RUN apt-get update && apt-get install python3 python3-pip
-RUN mkdir -p /app && chown -R 1000:1000 /app
+
 # comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
 RUN pip install comfy-cli \
+    && mkdir -p /app \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd \
     && chown -R 1000:1000 /app
 
