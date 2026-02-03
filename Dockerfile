@@ -12,13 +12,14 @@ RUN chmod +x /app/install.sh
 # Install required software
 RUN apt-get update && apt-get install python3 python3-pip
 RUN mkdir -p /app && chown -R 1000:1000 /app
-RUN pip install comfy-cli
+# comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
+RUN pip install comfy-cli \
+    && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd
 
 USER 1000:1000
-# We Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
-# and then we install comfyui, which also prompts interactively if the paths are correct 
-RUN printf "n\n" | comfy tracking disable \
-    && printf "y\n" | comfy --workspace=/app/comfyui install --amd
+# Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
+# Also grant default user ownership of /app
+RUN printf "n\n" | comfy tracking disable && chown -R 1000:1000 /app
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
