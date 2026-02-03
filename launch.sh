@@ -5,6 +5,7 @@ BASE=$(pwd)
 
 # filling mounted directories from .default.<template> directories
 for d in blueprints user custom_nodes models input output; do
+  echo "Processing '$d'"
   src="$BASE/.default.$d"
   dst="$BASE/$d"
 
@@ -13,7 +14,7 @@ for d in blueprints user custom_nodes models input output; do
   mkdir -p "$dst"
 
   # Copy only missing files/directories, recursively
-  cp -a -n "$src/." "$dst/"
+  cp -a --update=none "$src/." "$dst/"
 done
 
 
