@@ -6,7 +6,7 @@ ENV COMFY_DIR=/app/comfyui
 WORKDIR /app
 
 # Install required software
-RUN apt-get update && apt-get install python3 python3-pip
+RUN apt-get update && apt-get install python3 python3-pip tree
 
 # comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
 RUN pip install comfy-cli \
@@ -22,7 +22,8 @@ run mv $COMFY_DIR/blueprints $COMFY_DIR/.default.blueprints \
     && mv $COMFY_DIR/output $COMFY_DIR/.default.output && mkdir $COMFY_DIR/output  \
     && chown -R 1000:1000 /app \
     && chmod -R 755 /app \
-    && chmod +x /app/launch.sh
+    && chmod +x /app/launch.sh \
+    && tree -pufid /app # debugging
 
 USER 1000:1000
 
