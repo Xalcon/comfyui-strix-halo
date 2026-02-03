@@ -52,3 +52,24 @@ Because Docker may create this directory as `root` if it does not already exist,
 ## Notes on storage requirements
 
 ROCm and ComfyUI are both large. Even a minimal setup requires approximately **45 GB of disk space** for the Docker image alone.
+
+### Configuring Higher Shared Memory Limits (VRAM)
+By default, my arch system exposed 64GB of my total 128GB as available VRAM. (BIOS setting is configured to allocate the minimum 512MB as recommended by other sources)
+To allow the full (or close to full) use of the 128GB as VRAM, additional kernel boot parameters need to be set. See https://github.com/kyuz0/amd-strix-halo-toolboxes?tab=readme-ov-file#62-kernel-parameters-tested-on-fedora-42
+
+Arch comes with systemd-boot intead of grub (if installed via archinstall), so the configuration slightly differs. The file to change is in /boot/loader/entries/. There may be multiple conf files in there, pick the one that applies to your setup (most likely the most recent one).
+Add `amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856` to the end of the "options" line, exmaple:
+```
+# Created by: archinstall
+# Created on: 2026-02-03_01-08-02
+title   Arch Linux (linux)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=PARTUUID=f818a4c5-82f6-4aa5-8314-1be1902f8aa0 zswap.enabled=0 rw rootfstype=ext4 amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856
+```
+
+After changing the configuration, reboot your system.
+
+> Note: The values are for systems with 128GB ram. For stability reasons, not the full 128GB should made available. The settings above limits it to 124GB. The GTT value is the amount of shared RAM as VRAM in MB (124 x 1024 = 126976) and the ttm.page_limit is the amount of 4kb pages (124 * 1024 * 1024 / 4 = 32505856). Adapt your values accordingly
+
+To verify if the new limits have applied, run `rocm-smi`. The output should list 2 agents. We care about the graphics agent, not the cpu agent, so look for the agent with name "gfx1151" (or whatever your gpu is). The pool info should mention a size of ~130 million KB if everything applied correctly. ComfyUIs logs should also mention the higher VRAM limit.
