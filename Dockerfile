@@ -11,11 +11,19 @@ RUN chmod +x /app/install.sh
 
 # Install required software
 RUN apt-get update && apt-get install python3 python3-pip
-RUN mkdir -p /app && chown -R 1000:1000 /app && chown -R 1000:1000 /opt/venv
+RUN mkdir -p /app && chown -R 1000:1000 /app
+RUN pip install comfy-cli
 
-# Install comfyui using non-root user
 USER 1000:1000
-RUN /bin/bash -c "/app/install.sh"
+RUN <<EOR
+  # Explicitly disable tracking
+  # no-so-fun fact: comfy will ask you if you want to disable tracking before the command to disable tracking goes through.
+  #                 why?!
+  printf "n\n" | comfy tracking disable
+  
+  # We will be prompted if we really want to install comfyui in the workspace location, so we pass in "y"
+  printf "y\n" | comfy --workspace=/app/comfyui install --amd
+EOR
 
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
