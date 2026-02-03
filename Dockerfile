@@ -11,7 +11,7 @@ RUN chmod +x /app/install.sh
 
 # Install required software
 RUN apt update && apt install python3 python3-pip
-RUN mkdir -p /app && chown -R 1000:1000 /app
+RUN mkdir -p /app && chown -R 1000:1000 /app && chown -R 1000:1000 /opt/venv
 
 # Install comfyui using non-root user
 USER 1000:1000
