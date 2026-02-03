@@ -9,6 +9,12 @@ WORKDIR /app
 COPY install.sh /app/install.sh
 RUN chmod +x /app/install.sh
 
+# Install required software
+RUN apt update && apt install python3 python3-pip
+RUN mkdir /app && chown -R 1000:1000 /app
+
+# Install comfyui using non-root user
+USER 1000:1000
 RUN /bin/bash -c "/app/install.sh"
 
 # Set default working directory for ComfyUI
@@ -16,8 +22,6 @@ WORKDIR $COMFY_DIR
 
 # Set environment variable needed for launch
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
-
-USER 1000:1000
 
 # Default command
 CMD ["comfy", "launch"]
