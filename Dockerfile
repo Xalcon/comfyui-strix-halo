@@ -5,10 +5,6 @@ FROM rocm/pytorch:latest
 ENV COMFY_DIR=/app/comfyui
 WORKDIR /app
 
-# Copy install script into the container
-COPY launch.sh /app/launch.sh
-RUN chmod +x /app/launch.sh
-
 # Install required software
 RUN apt-get update && apt-get install python3 python3-pip
 
@@ -28,6 +24,10 @@ RUN printf "n\n" | comfy tracking disable \
     && mv $COMFY_DIR/models $COMFY_DIR/.default.models \
     && mv $COMFY_DIR/input $COMFY_DIR/.default.input \
     && mv $COMFY_DIR/output $COMFY_DIR/.default.output
+
+# Copy install script into the container
+COPY launch.sh /app/launch.sh
+RUN chmod +x /app/launch.sh
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
