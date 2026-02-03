@@ -10,6 +10,9 @@ pip install comfy-cli
 echo "Registering comfy cli auto complete"
 comfy --install-completion
 
+# Explicitly disable tracking
+# no-so-fun fact: comfy will ask you if you want to disable tracking before the command to disable tracking goes through.
+#                 why?!
 printf "n\n" | comfy tracking disable
 
 # install comfyui and accept installing from github to the target workspace
