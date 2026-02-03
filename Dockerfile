@@ -18,7 +18,7 @@ USER 1000:1000
 # We Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
 # and then we install comfyui, which also prompts interactively if the paths are correct 
 RUN printf "n\n" | comfy tracking disable \
-    printf "y\n" | comfy --workspace=/app/comfyui install --amd
+    && printf "y\n" | comfy --workspace=/app/comfyui install --amd
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
