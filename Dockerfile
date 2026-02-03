@@ -36,5 +36,5 @@ WORKDIR $COMFY_DIR
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 
 # Default command
-CMD ["bash", "-c", "launch.sh"]
+CMD ["bash", "-c", "/app/launch.sh"]
 
