@@ -14,7 +14,10 @@ RUN pip install comfy-cli \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd
 
 COPY launch.sh /app/launch.sh
-RUN mv $COMFY_DIR/blueprints $COMFY_DIR/.default.blueprints \
+# Copy existing folders as template directories
+# They original folders will be mounted onto the host system and would lose their content
+# So we back them up. The launch.sh will copy them back conditionally before launching comfy
+RUN mv $COMFY_DIR/blueprints $COMFY_DIR/.default.blueprints && mkdir $COMFY_DIR/blueprints \
     && mv $COMFY_DIR/user $COMFY_DIR/.default.user && mkdir $COMFY_DIR/user \
     && mv $COMFY_DIR/custom_nodes $COMFY_DIR/.default.custom_nodes && mkdir $COMFY_DIR/custom_nodes  \
     && mv $COMFY_DIR/models $COMFY_DIR/.default.models && mkdir $COMFY_DIR/models  \
