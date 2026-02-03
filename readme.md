@@ -65,7 +65,7 @@ Add `amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856` to the end of
 title   Arch Linux (linux)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options root=PARTUUID=f818a4c5-82f6-4aa5-8314-1be1902f8aa0 zswap.enabled=0 rw rootfstype=ext4 amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856
+options root=PARTUUID=<YOUR_PART_UUID> zswap.enabled=0 rw rootfstype=ext4 amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856
 ```
 
 After changing the configuration, reboot your system.
