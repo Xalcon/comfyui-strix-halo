@@ -19,7 +19,12 @@ services:
     environment:
       - HSA_OVERRIDE_GFX_VERSION=11.0.0
     volumes:
-      - ./models:/app/comfyui/models
+      - ./data/models:/app/comfyui/models
+      - ./data/blueprints:/app/comfyui/blueprints
+      - ./data/input:/app/comfyui/input
+      - ./data/output:/app/comfyui/output
+      - ./data/user:/app/comfyui/user
+      - ./data/custom_nodes:/app/comfyui/custom_nodes
     tty: true
     
   nginx:
