@@ -19,7 +19,14 @@ RUN pip install comfy-cli \
 
 USER 1000:1000
 # Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
-RUN printf "n\n" | comfy tracking disable
+# Also make prepare user editable directories for mounting
+RUN printf "n\n" | comfy tracking disable \
+    && mv $COMFY_DIR/blueprints $COMFY_DIR/.default.blueprints \
+    && mv $COMFY_DIR/user $COMFY_DIR/.default.user \
+    && mv $COMFY_DIR/custom_nodes $COMFY_DIR/.default.custom_nodes \
+    && mv $COMFY_DIR/models $COMFY_DIR/.default.models \
+    && mv $COMFY_DIR/input $COMFY_DIR/.default.input \
+    && mv $COMFY_DIR/output $COMFY_DIR/.default.output
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
@@ -28,5 +35,5 @@ WORKDIR $COMFY_DIR
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 
 # Default command
-CMD ["comfy", "launch"]
+CMD ["bash", "-c", "launch.sh"]
 
