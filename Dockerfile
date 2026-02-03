@@ -15,16 +15,11 @@ RUN mkdir -p /app && chown -R 1000:1000 /app
 RUN pip install comfy-cli
 
 USER 1000:1000
-RUN <<EOR
-  # Explicitly disable tracking
-  # no-so-fun fact: comfy will ask you if you want to disable tracking before the command to disable tracking goes through.
-  #                 why?!
-  printf "n\n" | comfy tracking disable
-  
-  # We will be prompted if we really want to install comfyui in the workspace location, so we pass in "y"
-  printf "y\n" | comfy --workspace=/app/comfyui install --amd
-EOR
-
+# We Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
+# and then we install comfyui, which also prompts interactively if the paths are correct 
+RUN printf "n\n" | comfy tracking disable \
+    printf "y\n" | comfy --workspace=/app/comfyui install --amd
+    
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
 
