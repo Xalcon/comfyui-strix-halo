@@ -14,6 +14,10 @@ RUN pip install comfy-cli \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd \
     && chown -R 1000:1000 /app
 
+# Copy install script into the container
+COPY launch.sh /app/launch.sh
+RUN chmod +x /app/launch.sh
+
 USER 1000:1000
 # Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
 # Also make prepare user editable directories for mounting
@@ -24,10 +28,6 @@ RUN printf "n\n" | comfy tracking disable \
     && mv $COMFY_DIR/models $COMFY_DIR/.default.models \
     && mv $COMFY_DIR/input $COMFY_DIR/.default.input \
     && mv $COMFY_DIR/output $COMFY_DIR/.default.output
-
-# Copy install script into the container
-COPY launch.sh /app/launch.sh
-RUN chmod +x /app/launch.sh
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
