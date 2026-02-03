@@ -40,7 +40,8 @@ The Docker configuration launches a ComfyUI container with a working ROCm instal
 * ComfyUI listens on `127.0.0.1:8188`.
 * Certain features are automatically disabled by ComfyUI when binding to a non-local address, for security reasons.
 
-This means the container is only reachable on the same machine. If access from a different machine is required, use a reverse proxy or change the networking configuration of comfyui.
+This means the container is only reachable on the same machine. For the purpose of being reachable on the whole network, I've added an nginx reverse proxy. This keeps comfyui listening on 127.0.0.1 but makes it available to the local network.
+NOTE: There is no authentication, dont use this as is on internet reachable devices or untrusted networks!
 
 ### Models directory
 
