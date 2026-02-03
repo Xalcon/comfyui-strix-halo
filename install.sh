@@ -1,3 +1,6 @@
+#!/bin/sh
+set -e
+
 cd /app
 
 echo "Installing comfy-cli via pip"
