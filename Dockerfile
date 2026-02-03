@@ -15,11 +15,11 @@ RUN pip install comfy-cli \
 
 COPY launch.sh /app/launch.sh
 run mv $COMFY_DIR/blueprints $COMFY_DIR/.default.blueprints \
-    && mv $COMFY_DIR/user $COMFY_DIR/.default.user \
-    && mv $COMFY_DIR/custom_nodes $COMFY_DIR/.default.custom_nodes \
-    && mv $COMFY_DIR/models $COMFY_DIR/.default.models \
-    && mv $COMFY_DIR/input $COMFY_DIR/.default.input \
-    && mv $COMFY_DIR/output $COMFY_DIR/.default.output \
+    && mv $COMFY_DIR/user $COMFY_DIR/.default.user && mkdir $COMFY_DIR/user \
+    && mv $COMFY_DIR/custom_nodes $COMFY_DIR/.default.custom_nodes && mkdir $COMFY_DIR/custom_nodes  \
+    && mv $COMFY_DIR/models $COMFY_DIR/.default.models && mkdir $COMFY_DIR/models  \
+    && mv $COMFY_DIR/input $COMFY_DIR/.default.input && mkdir $COMFY_DIR/input  \
+    && mv $COMFY_DIR/output $COMFY_DIR/.default.output && mkdir $COMFY_DIR/output  \
     && chown -R 1000:1000 /app \
     && chmod -R 755 /app \
     && chmod +x /app/launch.sh
