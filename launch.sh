@@ -14,7 +14,7 @@ for d in blueprints user custom_nodes models input output; do
   mkdir -p "$dst"
 
   # Copy only missing files/directories, recursively
-  cp -a --update=none "$src/." "$dst/"
+  cp -a --update=none "$src" "$dst/"
 done
 
 
