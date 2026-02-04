@@ -30,6 +30,8 @@ WORKDIR $COMFY_DIR
 # Set environment variable needed for launch
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 
+USER ${BOX_UID}:${BOX_GID}
+
 # Default command
 # CMD ["comfy", "launch"]
 
