@@ -8,7 +8,6 @@ ARG BOX_GID=1000
 ENV COMFY_DIR=/app/comfyui
 WORKDIR /app
 
-# comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
 RUN apt-get update && apt-get install -y \
         python3 python3-pip \
         git nano neovim wget curl \
@@ -18,6 +17,8 @@ RUN apt-get update && apt-get install -y \
 
 # Files in the container need to be owned by someone that is not root or we will run into issues later on
 # We also delete the ubuntu user that exists in the base image since it has the UID 1000, which can clash with host users in our distrobox setup
+# Note: We explicitly do not change the permissions of th /opt/venv here since that would bloat the image size significantly
+#       Instead, the setup scripts will take care of fixing permissions on first run
 RUN chown -R ${BOX_UID}:${BOX_GID} /app \
     && chmod -R 755 /app \
     && userdel -r ubuntu || true \

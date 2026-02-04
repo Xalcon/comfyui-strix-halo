@@ -19,6 +19,15 @@ if ! command -v rocminfo &> /dev/null; then
     exit 1
 fi
 
+# check if we can build docker images
+if ! docker info > /dev/null 2>&1; then
+    echo "Docker does not seem to be running or you do not have permissions to run docker commands."
+    echo "Please ensure docker or a docker compatible runtime is installed and running."
+    exit 1
+fi
+
+docker build -t comfyui-strix-halo .
+
 # Check if the distrbox already exists
 if distrobox list | grep -q "$DISTROBOX_NAME"; then
     echo "Distrobox '$DISTROBOX_NAME' already exists. Skipping creation."
@@ -46,4 +55,4 @@ echo "Fixing permissions for venv inside the distrobox $DISTROBOX_NAME..."
 distrobox enter "$DISTROBOX_NAME" -- bash -c "sudo chown -R ${BOX_UID}:${BOX_GID} /opt/venv"
 
 echo "Distrobox '$DISTROBOX_NAME' is set up and ready to use."
-echo "To enter the distrobox, run: distrobox enter $DISTROBOX_NAME -nw"
+echo "To enter the distrobox, run: distrobox enter $DISTROBOX_NAME"
