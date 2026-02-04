@@ -9,7 +9,10 @@ ENV COMFY_DIR=/app/comfyui
 WORKDIR /app
 
 # comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
-RUN apt-get update && apt-get install -y python3 python3-pip && pip install comfy-cli \
+RUN apt-get update && apt-get install -y \
+        python3 python3-pip \
+        git nano nvim wget curl \
+    && pip install comfy-cli \
     && mkdir -p /app \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd
 
@@ -19,10 +22,6 @@ RUN chown -R ${BOX_UID}:${BOX_GID} /app \
     && chmod -R 755 /app \
     && userdel -r ubuntu || true \
     && groupdel ubuntu || true
-
-# Create a global PS1 for all users
-RUN echo 'export PS1="\[\e[1;36m\][\$(basename \$DISTRBOX_NAME 2>/dev/null || hostname)] \u@\h\[\e[0m\] \w\n\[\e[1;33m\]\$(git branch 2>/dev/null | grep '\''^*'\'' | colrm 1 2)\[\e[0m\] $ "' > /etc/profile.d/custom_ps1.sh \
-    && chmod +x /etc/profile.d/custom_ps1.sh
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR

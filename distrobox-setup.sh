@@ -3,7 +3,7 @@ set -e
 
 DISTROBOX_NAME="comfyui"
 BASE_IMAGE_NAME="comfyui-strix-halo"
-DISTRBOX_HOME="$HOME/.local/share/distrobox/$DISTROBOX_NAME/home"
+DISTRBOX_HOME="$HOME/.distrobox/$DISTROBOX_NAME/home"
 BOX_UID=$(id -u)
 BOX_GID=$(id -g)
 
@@ -44,3 +44,6 @@ fi
 
 echo "Fixing permissions for venv inside the distrobox $DISTROBOX_NAME..."
 distrobox enter "$DISTROBOX_NAME" -- bash -c "sudo chown -R ${BOX_UID}:${BOX_GID} /opt/venv"
+
+echo "Distrobox '$DISTROBOX_NAME' is set up and ready to use."
+echo "To enter the distrobox, run: distrobox enter $DISTROBOX_NAME -nw"
