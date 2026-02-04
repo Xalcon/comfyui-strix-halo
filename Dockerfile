@@ -11,7 +11,7 @@ WORKDIR /app
 # comfy install needs to run as root in this container because the rocm base image did install all packages as root and changing the ownership here would grow the size of the layer massively
 RUN apt-get update && apt-get install -y \
         python3 python3-pip \
-        git nano nvim wget curl \
+        git nano neovim wget curl \
     && pip install comfy-cli \
     && mkdir -p /app \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd
