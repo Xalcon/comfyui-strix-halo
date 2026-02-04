@@ -28,6 +28,7 @@ else
     distrobox create \
         --name "$DISTROBOX_NAME" \
         --image "$BASE_IMAGE_NAME" \
+        --no-home \
         --volume "./data/models:/app/comfyui/models:rw" \
         --volume "./data/user:/app/comfyui/user:rw" \
         --volume "./data/inputs:/app/comfyui/inputs:rw" \
@@ -41,5 +42,4 @@ else
 fi
 
 echo "Fixing permissions for venv inside the distrobox $DISTROBOX_NAME..."
-echo "You may be prompted to enter your password for sudo inside the distrobox."
 distrobox enter "$DISTROBOX_NAME" -- bash -c "sudo chown -R ${BOX_UID}:${BOX_GID} /opt/venv"
