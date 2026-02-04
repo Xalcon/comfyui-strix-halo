@@ -78,8 +78,8 @@ else
         --home "${DISTRBOX_HOME}" \
         --volume "./data/models:/app/comfyui/models:rw" \
         --volume "./data/user:/app/comfyui/user:rw" \
-        --volume "./data/inputs:/app/comfyui/inputs:rw" \
-        --volume "./data/outputs:/app/comfyui/outputs:rw" \
+        --volume "./data/input:/app/comfyui/input:rw" \
+        --volume "./data/output:/app/comfyui/output:rw" \
         --additional-flags " \
             --device /dev/kfd \
             --device /dev/dri \
