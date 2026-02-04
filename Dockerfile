@@ -15,13 +15,8 @@ RUN apt-get update && apt-get install -y \
     && mkdir -p /app \
     && printf "\ny\n" | comfy --workspace=/app/comfyui install --amd
 
-# Files in the container need to be owned by someone that is not root or we will run into issues later on
-# We also delete the ubuntu user that exists in the base image since it has the UID 1000, which can clash with host users in our distrobox setup
-# Note: We explicitly do not change the permissions of th /opt/venv here since that would bloat the image size significantly
-#       Instead, the setup scripts will take care of fixing permissions on first run
-RUN chown -R ${BOX_UID}:${BOX_GID} /app \
-    && chmod -R 755 /app \
-    && userdel -r ubuntu || true \
+# We delete the default ubuntu user/group to avoid conflicts when the image is used with distrobox
+RUN userdel -r ubuntu || true \
     && groupdel ubuntu || true
     
 # Set default working directory for ComfyUI

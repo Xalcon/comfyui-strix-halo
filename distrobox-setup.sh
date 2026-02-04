@@ -52,7 +52,7 @@ else
 fi
 
 echo "Fixing permissions for venv inside the distrobox $DISTROBOX_NAME..."
-distrobox enter "$DISTROBOX_NAME" -- bash -c "sudo chown -R ${BOX_UID}:${BOX_GID} /opt/venv"
+distrobox enter "$DISTROBOX_NAME" -- bash -c "sudo chown -R ${BOX_UID}:${BOX_GID} /opt/venv /app/comfyui"
 
 echo "Distrobox '$DISTROBOX_NAME' is set up and ready to use."
 echo "To enter the distrobox, run: distrobox enter $DISTROBOX_NAME"
