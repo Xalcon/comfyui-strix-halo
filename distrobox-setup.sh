@@ -3,6 +3,7 @@ set -e
 
 DISTROBOX_NAME="comfyui"
 BASE_IMAGE_NAME="comfyui-strix-halo"
+DISTRBOX_HOME="$HOME/.local/share/distrobox/$DISTROBOX_NAME/home"
 BOX_UID=$(id -u)
 BOX_GID=$(id -g)
 
@@ -28,7 +29,7 @@ else
     distrobox create \
         --name "$DISTROBOX_NAME" \
         --image "$BASE_IMAGE_NAME" \
-        --no-home \
+        --home "$DISTRBOX_HOME" \
         --volume "./data/models:/app/comfyui/models:rw" \
         --volume "./data/user:/app/comfyui/user:rw" \
         --volume "./data/inputs:/app/comfyui/inputs:rw" \

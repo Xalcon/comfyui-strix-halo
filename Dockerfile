@@ -23,9 +23,6 @@ RUN chown -R ${BOX_UID}:${BOX_GID} /app \
 # Create a global PS1 for all users
 RUN echo 'export PS1="\[\e[1;36m\][\$(basename \$DISTRBOX_NAME 2>/dev/null || hostname)] \u@\h\[\e[0m\] \w\n\[\e[1;33m\]\$(git branch 2>/dev/null | grep '\''^*'\'' | colrm 1 2)\[\e[0m\] $ "' > /etc/profile.d/custom_ps1.sh \
     && chmod +x /etc/profile.d/custom_ps1.sh
-
-# Explicitly disable tracking (Unfortunately its still interactive even though it shouldnt be)
-RUN printf "n\n" | comfy tracking disable 
     
 # Set default working directory for ComfyUI
 WORKDIR $COMFY_DIR
@@ -34,5 +31,5 @@ WORKDIR $COMFY_DIR
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 
 # Default command
-CMD ["comfy", "launch"]
+# CMD ["comfy", "launch"]
 
